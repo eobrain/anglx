@@ -1085,11 +1085,11 @@ test.fact("short anonymous functions",
 )
 
 test.fact("Effective Go",
-	parse(`if a := b; f(a) {c}`),
+	parse(`if, given a is b, f(a) {c}`),
 	=>,
 	parsed("(let [a b] (when (f a) c))"),
 
-	parse(`if err := file.Chmod(0664); err != nil {
+	parse(`if, given err is file.Chmod(0664), err != nil {
     log.Print(err)
     err
 }`, ["file", "log"], []),
@@ -1230,10 +1230,10 @@ test.fact("switch with pre-expression",
 	parse(`switch x.(type) {case String: x; case Integer: str(x*x); default: str(x)}`),
 	=>, parsed(`(cond (instance? String x) x (instance? Integer x) (str (* x x)) :else (str x))`),
 
-	parse(`switch x := bar; x {case A: b; case C: d; default: e}`),
+	parse(`switch, given x is bar, x {case A: b; case C: d; default: e}`),
 	=>, parsed(`(let [x bar] (case x :a b :c d e))`),
 
-	parse(`switch x := bar(); x {case P, Q, R: b; case S, T, U: d; default: e}`),
+	parse(`switch, given x is bar(), x {case P, Q, R: b; case S, T, U: d; default: e}`),
 	=>, parsed(`(let [x (bar)] (case x (:p :q :r) b (:s :t :u) d e))`)
 )
 

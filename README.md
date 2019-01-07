@@ -377,7 +377,7 @@ defined at the bottom of the function.
 
 
 #### Go primitive types
-```go
+```txt
 package main
 
 import (
@@ -386,11 +386,7 @@ import (
 )
 
 func pow(x, n, lim float64) float64 {
-	if v := math.Pow(x, n); v < lim {
-		v
-	} else {
-		lim
-	}
+	if, given v is math.Pow(x, n), v < lim then v else lim
 }
 
 func main() {
@@ -409,7 +405,7 @@ primitive types that may have different bit sizes.
 
 #### Optional `return`
 
-```go
+```txt
 package main
 
 import (
@@ -417,11 +413,7 @@ import (
 )
 
 func newton(n int, x, z float64) float64 {
-	if n == 0 {
-		z
-	} else {
-		newton(n-1, x, z-(z*z-x)/(2*x))
-	}
+	if n == 0 then z else newton(n-1, x, z-(z*z-x)/(2*x))
 }
 
 func Sqrt(x float64) float64 {

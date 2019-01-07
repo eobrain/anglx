@@ -105,7 +105,7 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
                          (<NL #'\bdefault\b'          ':'> expressions )? <'}'>
        boolswitch = <#'\bswitch\b' '{'> boolcaseclause {<NL> boolcaseclause} <'}'>
        constswitch = <#'\bswitch\b'> expr <'{'> constcaseclause {<NL> constcaseclause} <'}'>
-       letconstswitch = <#'\bswitch\b'> Destruct <':='> expr <NL>
+       letconstswitch = <#'\bswitch\b'> <','> <'given'> Destruct <'is'> expr <','>
                                    expr <'{'> constcaseclause {<NL> constcaseclause} <'}'>
 	 boolcaseclause = boolswitchcase <':'> expressions
 	 constcaseclause = constswitchcase <':'> expressions
@@ -188,7 +188,7 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
        vardecl2 = Identifier  <','> Identifier ( typename )? <'='> precedence00 <','> precedence00
      ifelseexpr = <#'\bif\b'> expr Blocky ( <#'\belse\b'> Blocky )?
                 | <#'\bif\b'> expr <'then'> expr ( <#'\belse\b'> expr )?
-     letifelseexpr = <#'\bif\b'> Destruct <':='> expr <NL>
+     letifelseexpr = <#'\bif\b'> <','> <'given'> Destruct <'is'> expr <','>
                             expr Blocky ( <#'\belse\b'> Blocky )?
      forrange = <#'\bfor\b'> Destruct <':=' #'\brange\b'> expr  Blocky
      forlazy = <#'\bfor\b'> Destruct <':=' #'\blazy\b'> expr
