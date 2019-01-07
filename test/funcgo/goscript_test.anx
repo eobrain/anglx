@@ -1,12 +1,12 @@
 package goscript_test
 import (
         test "midje/sweet"
-        fgo "funcgo/core"
+        fgo "anglx/core"
 )
 
 
 test.fact("Clojure script import",
-        fgo.Parse("p.gos", `
+        fgo.Parse("p.anxs", `
 package p
 import(
   ef "enfocus/core"
@@ -26,7 +26,7 @@ em.someMacro
 )
 
 func parse(expr) {
-	fgo.Parse("foo.gos", "package foo;"  str  expr)
+	fgo.Parse("foo.anxs", "package foo;"  str  expr)
 }
 
 func parsed(expr) {
@@ -39,7 +39,7 @@ test.fact("symbol",
 )
 
 test.fact("enfocus",
-	fgo.Parse("fgosite/client.gos", `
+	fgo.Parse("fgosite/client.anxs", `
 package client
 import (
 	ef "enfocus/core"

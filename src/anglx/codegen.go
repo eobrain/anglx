@@ -800,7 +800,7 @@ func usesAsync(parsed) {
 // Return the Clojure code generated from the given parse tree.
 func Generate(path String, parsed, isSync) {
 	symbolTable := symbols.New()
-	isGoscript  := path->endsWith(".gos")
+	isGoscript  := path->endsWith(".anxs")
 	isSync      := !usesAsync(parsed)
 	codeGen     := codeGenerator(symbolTable, isGoscript) += {
 		PACKAGECLAUSE:   packageclauseFunc(symbolTable, path, isGoscript, isSync),

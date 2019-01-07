@@ -1,11 +1,11 @@
 package fundamental_test
 import (
         test "midje/sweet"
-        fgoc "funcgo/main"
+        fgoc "anglx/main"
 )
 
 func parse(expr) {
-	fgoc.CompileString("foo.go", "package foo;"  str  expr)
+	fgoc.CompileString("foo.anx", "package foo;"  str  expr)
 }
 
 test.fact("func",

@@ -20,7 +20,7 @@ test.fact("getIn",
 
 test.fact("assoc assoc",
 	{
-		row := matrix[1] += {2: X}
+		Given row is matrix[1] += {2: X}
 		matrix += {1: row}
 	},
 	=>, [
@@ -57,8 +57,8 @@ func onBoard(size) {
 func neighbors(size, yx) {
 	neighbors([[-1,0], [1,0], [0,-1], [0,1]], size, yx)
 } (deltas, size, yx) {
-	addYx := func{map(+, yx, $1)}
-	unfiltered := addYx  map  deltas
+	Given addYx is func{map(+, yx, $1)}
+	Given unfiltered is addYx  map  deltas
 	onBoard(size)  filter  unfiltered
 }
 
@@ -74,7 +74,7 @@ var pool ExecutorService = Executors::newFixedThreadPool(
 
 func mutateDothreads(f, {threadCount:THREADS, execCount:TIMES} ) {
 	for _ := times threadCount {
-		multipleCalls Runnable := func{ for _ := times execCount { f() } }
+		Given multipleCalls Runnable is func{ for _ := times execCount { f() } }
 		pool->submit(multipleCalls)
 	}
 }
@@ -117,14 +117,14 @@ var rotateCount = ref(0)
 func fakeShuffle(xs) {
 	dosync(rotateCount  alter  inc)
 	{
-		shift := (*rotateCount) % count(xs)
+		Given shift is (*rotateCount) % count(xs)
 		(shift  drop  xs)  concat  (shift  take  xs)
 	}
 }
 
 {
 	// Fake shuffle to make test deterministic
-	shuffle := fakeShuffle
+	Given shuffle is fakeShuffle
 
 	test.fact("fake shuffle is actually rotate",
 		shuffle([111,222,333,444]), =>, [222,333,444,111],
@@ -191,7 +191,7 @@ func updateToMove(move) {
 func makeMove() {
 	dosync(
 		{
-			move := chooseMove(*toMove)
+			Given move is chooseMove(*toMove)
 			movePiece(move, *toMove)
 			updateToMove(move)
 		}

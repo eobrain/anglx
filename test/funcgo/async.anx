@@ -44,22 +44,22 @@ func primes(c) {
 test.fact("can read and write channels in parallel",
 
 	{
-		c := make(chan)
+		Given c is make(chan)
 		go sum(3, 4, c)
 		<-c
 	}, =>, 7,
 
 	{
-		c := make(chan)
+		Given c is make(chan)
 		go primes(c)
 		[<-c, <-c, <-c, <-c]
 	}, =>, [2, 3, 5, 7],
 
 	{
-		c := make(chan)
+		Given c is make(chan)
 		go primes(c)
 		{
-			c2 := make(chan)
+			Given c2 is make(chan)
 			go func{
 				c2 <- [<-c, <-c, <-c, <-c]
 			}()
@@ -72,22 +72,22 @@ test.fact("can read and write channels in parallel",
 test.fact("can read and write channels in parallel using buffered channels",
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go sum(3, 4, c)
 		<-c
 	}, =>, 7,
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go primes(c)
 		[<-c, <-c, <-c, <-c]
 	}, =>, [2, 3, 5, 7],
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go primes(c)
 		{
-			c2 := make(chan, 10)
+			Given c2 is make(chan, 10)
 			go func{
 				c2 <- [<-c, <-c, <-c, <-c]
 			}()
@@ -100,13 +100,13 @@ test.fact("can read and write channels in parallel using buffered channels",
 test.fact("can read and write channels in parallel using lightweight processes",
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go { c <: 3 + 4 }
 		<-c
 	}, =>, 7,
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go {
 			c <: 2
 			c <: 3
@@ -118,10 +118,10 @@ test.fact("can read and write channels in parallel using lightweight processes",
 	}, =>, [2, 3, 5, 7],
 
 	{
-		c := make(chan, 10)
+		Given c is make(chan, 10)
 		go primes(c)
 		{
-			c2 := make(chan, 10)
+			Given c2 is make(chan, 10)
 			go {
 				c2 <: [<:c, <:c, <:c, <:c]
 			}
@@ -147,8 +147,8 @@ func fibonacci(c, quit) {
 test.fact("can use select to block on multiple things",
 
 	withOutStr({
-		c := make(chan int)
-		quit := make(chan int)
+		Given c is make(chan int)
+		Given quit is make(chan int)
 		go func() {
 			for i := 0; i < 10; i++ {
 				println(<-c)
@@ -170,8 +170,8 @@ quit
 `,
 
 	withOutStr({
-		c := make(chan int)
-		quit := make(chan int)
+		Given c is make(chan int)
+		Given quit is make(chan int)
 		go {
 			for i := 0; i < 10; i++ {
 				println(<:c)
@@ -205,7 +205,7 @@ func goFibonacci(c, quit) {
 }
 
 func elapsedTimeMs(f) {
-	start := System::currentTimeMillis()
+	Given start is System::currentTimeMillis()
 	f()
 	System::currentTimeMillis() - start
 }
@@ -214,12 +214,13 @@ func doSomeWork() {
 	var r = 10
 }
 
+// Warning this test appears to be flaky
 test.fact("go blocks are more lightweight than thread blocks",
 
 	{
-		n := 10000
-		threadMs := elapsedTimeMs(func(){
-			c := make(chan, n)
+		Given n is 10000
+		Given threadMs is elapsedTimeMs(func(){
+			Given c is make(chan, n)
 			for _ := times n {
 				thread {
 					doSomeWork()
@@ -228,8 +229,8 @@ test.fact("go blocks are more lightweight than thread blocks",
 			}
 			for _ := times n { <-c }
 		})
-		goMs := elapsedTimeMs(func(){
-			c := make(chan, n)
+		Given goMs is elapsedTimeMs(func(){
+			Given c is make(chan, n)
 			for _ := times n {
 				go {
 					doSomeWork()

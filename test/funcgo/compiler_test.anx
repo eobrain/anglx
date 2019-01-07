@@ -1,8 +1,8 @@
 package compiler_test
 import (
         test "midje/sweet"
-        fgo "funcgo/core"
-        fgoc "funcgo/main"
+        fgo "anglx/core"
+        fgoc "anglx/main"
         "clojure/string"
 )
 //import type (
@@ -24,12 +24,12 @@ func compileString(path, fgoText) {
 
 
 test.fact("smallest complete program has no import and a single expression",
-        compileString("foo.go", "package foo;12345"),
+        compileString("foo.anx", "package foo;12345"),
         =>,
         `(ns foo (:gen-class)) (set! *warn-on-reflection* true) 12345`)
 
 test.fact("Can use newlines instead of semicolons",
-        compileString("foo.go", `
+        compileString("foo.anx", `
 package foo
 12345
 `),
@@ -37,17 +37,17 @@ package foo
         `(ns foo (:gen-class)) (set! *warn-on-reflection* true) 12345`)
 
 test.fact("package can be dotted",
-        compileString("foo/bar.go", "package bar;12345"),
+        compileString("foo/bar.anx", "package bar;12345"),
         => ,
         `(ns foo.bar (:gen-class)) (set! *warn-on-reflection* true) 12345`,
 
-        compileString("yippee/yaday/yahoo/boys.go", "package boys;12345"),
+        compileString("yippee/yaday/yahoo/boys.anx", "package boys;12345"),
         => ,
         `(ns yippee.yaday.yahoo.boys (:gen-class)) (set! *warn-on-reflection* true) 12345`
 )
 
 test.fact("can import other packages",
-        compileString("foo.go", `
+        compileString("foo.anx", `
 package foo
 import(
   b "bar"
@@ -62,7 +62,7 @@ b.xxx
 
 
 test.fact("can import packages for side effect",
-        compileString("foo.go", `
+        compileString("foo.anx", `
 package foo
 import(
   b "bar"
@@ -77,7 +77,7 @@ b.xxx
 
 
 test.fact("can exclude built-ins",
-        compileString("foo.go", `
+        compileString("foo.anx", `
 package foo
 exclude ( +, * )
 a
@@ -93,18 +93,18 @@ func parse(expr) {
 } (expr, pkgs) {
 	parse(expr, list(pkgs), [])
 } (expr, pkgs, types) {
-	imports := if count(pkgs) == 0 {
+	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		lines := for p := lazy pkgs {str(`"`, p, `"`)}
+		Given lines is for p := lazy pkgs {str(`"`, p, `"`)}
 		str("import(\n", "\n"  string.join  lines, "\n)\n")
 	}
-	importtypes := if count(types) == 0 {
+	Given importtypes is if count(types) == 0 {
 		""
 	} else {
 		str("import type(\n", "\n"  string.join  types, "\n)\n")
 	}
-	compileString("foo.go",
+	compileString("foo.anx",
 		str("package foo\n", imports, importtypes, expr)
 	)
 }
@@ -114,18 +114,18 @@ func parseJs(expr) {
 } (expr, pkgs) {
 	parseJs(expr, list(pkgs), [])
 } (expr, pkgs, types) {
-	imports := if count(pkgs) == 0 {
+	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		lines := for p := lazy pkgs {str(`"`, p, `"`)}
+		Given lines is for p := lazy pkgs {str(`"`, p, `"`)}
 		str("import(\n", "\n"  string.join  lines, "\n)\n")
 	}
-	importtypes := if count(types) == 0 {
+	Given importtypes is if count(types) == 0 {
 		""
 	} else {
 		str("import type(\n", "\n"  string.join  types, "\n)\n")
 	}
-	compileString("foo.gos",
+	compileString("foo.anxs",
 		str("package foo\n", imports, importtypes, expr)
 	)
 }
@@ -134,16 +134,16 @@ func parsed(expr) {
 } (expr, pkgs) {
 	parsed(expr, list(pkgs), [])
 } (expr, pkgs, types) {
-	imports := if count(pkgs) == 0 {
+	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		lines := for p := lazy pkgs {str("[", p, " :as ", p, "]")}
+		Given lines is for p := lazy pkgs {str("[", p, " :as ", p, "]")}
 		str(" (:require ", " "  string.join  lines, ")")
 	}
-	importtypes := if count(types) == 0 {
+	Given importtypes is if count(types) == 0 {
 		""
 	} else {
-		lines := for t := lazy types {str("(", t, ")")}
+		Given lines is for t := lazy types {str("(", t, ")")}
 		str(" (:import ", " "  string.join  lines, ")")
 	}
 	str("(ns foo (:gen-class)",
@@ -175,16 +175,16 @@ func parsedJs(expr) {
 } (expr, pkgs) {
 	parsedJs(expr, list(pkgs), [])
 } (expr, pkgs, types) {
-	imports := if count(pkgs) == 0 {
+	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		lines := for p := lazy pkgs {str("[", p, " :as ", p, "]")}
+		Given lines is for p := lazy pkgs {str("[", p, " :as ", p, "]")}
 		str(" (:require ", " "  string.join  lines, ")")
 	}
-	importtypes := if count(types) == 0 {
+	Given importtypes is if count(types) == 0 {
 		""
 	} else {
-		lines := for t := lazy types {str("(", t, ")")}
+		Given lines is for t := lazy types {str("(", t, ")")}
 		str(" (:import ", " "  string.join  lines, ")")
 	}
 	str("(ns foo",
@@ -196,7 +196,7 @@ func parsedJs(expr) {
 }
 
 func parseNoPretty(expr) {
-	fgo.Parse("foo.go", "package foo;"  str  expr)
+	fgo.Parse("foo.anx", "package foo;"  str  expr)
 }
 
 func parsedNoPretty(expr) {
@@ -311,7 +311,7 @@ test.fact("Can destructure vectors using const",
 )
 
 // See http://blog.jayfields.com/2010/07/clojure-destructuring.html
-test.fact("Can destructure vectors using :=",
+test.fact("Can destructure vectors using Given",
         parse(`{Given[a,b]is ab; f(a,b)}`),
         =>,
         parsed(`(let [[a b] ab] (f a b))`),
@@ -364,7 +364,7 @@ test.fact("can destructure dicts using const and func",
         parsed(`(print-status {:name "Jim", :scores [3 5 4 5]})`)
 )
 
-test.fact("can destructure dicts using :=",
+test.fact("can destructure dicts using Given",
         parse(`{Given{theX: X, theY: Y}is point; f(theX, theY)}`),
         =>,
         parsed(`(let [{the-x :x, the-y :y} point] (f the-x the-y))`),
@@ -1009,7 +1009,7 @@ test.fact("symbols can start with keywords",
 	parse("ranged") ,=>, parsed("ranged")
 )
 
-test.fact("full source file", fgo.Parse("foo.go", `
+test.fact("full source file", fgo.Parse("foo.anx", `
 package foo
 import(
   b "bar/baz"
@@ -1032,7 +1032,7 @@ func FooBar(iii, jjj) {
 	`(ns foo (:gen-class) (:require [bar.baz :as b] [foo.faz.fedudle :as ff])) (set! *warn-on-reflection* true) (def ^:private x (b/bbb "blah blah")) (defn Foo-bar [iii jjj] (ff/fumanchu {:ooo (fn [m n] (str m n)) :ppp (fn [m n] (str m n)) :qqq qq }))`
 ))
 
-test.fact("full source file with async", fgo.Parse("foo.go", `
+test.fact("full source file with async", fgo.Parse("foo.anx", `
 package foo
 import(
   b "bar/baz"
@@ -1258,7 +1258,7 @@ test.fact("Error if import not used",
 )
 
 test.fact("import type",
-	compileString("joy/java.go", `
+	compileString("joy/java.anx", `
 package java
 import type (
   java.util.{HashMap, List}
