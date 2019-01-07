@@ -24,9 +24,7 @@ func Transpose(m) {
 }
 
 func *(m1, m2) {
-	for m1row := lazy m1 {
-		for m2col := lazy Transpose(m2) {
+	each m1row in lazy m1 as
+		each m2col in lazy Transpose(m2) as
 			m1row  dotProduct  m2col
-		}
-	}
 }

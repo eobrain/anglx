@@ -150,9 +150,7 @@ test.fact("can use select to block on multiple things",
 		Given c is make(chan int)
 		Given quit is make(chan int)
 		go func() {
-			for i := 0; i < 10; i++ {
-				println(<-c)
-			}
+			each i = 0; i < 10; i++ as	println(<-c)
 			quit <- 0
 		}()
 		fibonacci(c, quit)
@@ -173,9 +171,7 @@ quit
 		Given c is make(chan int)
 		Given quit is make(chan int)
 		go {
-			for i := 0; i < 10; i++ {
-				println(<:c)
-			}
+			each i = 0; i < 10; i++ as println(<:c)
 			quit <: 0
 		}
 		fibonacci(c, quit)
@@ -221,23 +217,21 @@ test.fact("go blocks are more lightweight than thread blocks",
 		Given n is 10000
 		Given threadMs is elapsedTimeMs(func(){
 			Given c is make(chan, n)
-			for _ := times n {
+			each _ in times n as
 				thread {
 					doSomeWork()
 					c <- true
-				}
 			}
-			for _ := times n { <-c }
+			each _ in times n as <-c
 		})
 		Given goMs is elapsedTimeMs(func(){
 			Given c is make(chan, n)
-			for _ := times n {
+			each _ in times n as
 				go {
 					doSomeWork()
 					c <- true
 				}
-			}
-			for _ := times n { <-c }
+			each _ in times n as <-c
 		})
 		logging.infof("thread: %dms -- go: %dms", threadMs, goMs)
 		goMs < threadMs

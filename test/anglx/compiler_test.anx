@@ -96,7 +96,7 @@ func parse(expr) {
 	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		Given lines is for p := lazy pkgs {str(`"`, p, `"`)}
+		Given lines is each p in lazy pkgs {str(`"`, p, `"`)}
 		str("import(\n", "\n"  string.join  lines, "\n)\n")
 	}
 	Given importtypes is if count(types) == 0 {
@@ -117,7 +117,7 @@ func parseJs(expr) {
 	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		Given lines is for p := lazy pkgs {str(`"`, p, `"`)}
+		Given lines is each p in lazy pkgs as str(`"`, p, `"`)
 		str("import(\n", "\n"  string.join  lines, "\n)\n")
 	}
 	Given importtypes is if count(types) == 0 {
@@ -137,13 +137,13 @@ func parsed(expr) {
 	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		Given lines is for p := lazy pkgs {str("[", p, " :as ", p, "]")}
+		Given lines is each p in lazy pkgs as str("[", p, " :as ", p, "]")
 		str(" (:require ", " "  string.join  lines, ")")
 	}
 	Given importtypes is if count(types) == 0 {
 		""
 	} else {
-		Given lines is for t := lazy types {str("(", t, ")")}
+		Given lines is each t in lazy types as str("(", t, ")")
 		str(" (:import ", " "  string.join  lines, ")")
 	}
 	str("(ns foo (:gen-class)",
@@ -178,13 +178,13 @@ func parsedJs(expr) {
 	Given imports is if count(pkgs) == 0 {
 		""
 	} else {
-		Given lines is for p := lazy pkgs {str("[", p, " :as ", p, "]")}
+		Given lines is each p in lazy pkgs as str("[", p, " :as ", p, "]")
 		str(" (:require ", " "  string.join  lines, ")")
 	}
 	Given importtypes is if count(types) == 0 {
 		""
 	} else {
-		Given lines is for t := lazy types {str("(", t, ")")}
+		Given lines is each t in lazy types as str("(", t, ")")
 		str(" (:import ", " "  string.join  lines, ")")
 	}
 	str("(ns foo",
@@ -663,17 +663,29 @@ test.fact("try catch",
 	parse("try { a } catch T e{ b }", [], ["a.T"]),
 	=>, parsed("(try a (catch T e b))", [], ["a T"])
 )
-test.fact("for",
-	parse("for x:=range xs{f(x)}")    ,=>, parsed("(doseq [x xs] (f x))"),
-	parse("for x := range xs {f(x)}") ,=>, parsed("(doseq [x xs] (f x))"),
-	parse("for x:= lazy xs{f(x)}") ,=>, parsed("(for [x xs] (f x))"),
-	parse("for x:= lazy xs if a{f(x)}") ,=>, parsed("(for [x xs :when a] (f x))"),
-	parse("for i:= times n {f(i)}") ,=>, parsed("(dotimes [i n] (f i))"),
-	parse("for [a,b]:= lazy xs{f(a,b)}") ,=>, parsed("(for [[a b] xs] (f a b))"),
-	parse("for x:=lazy xs if x<0 {f(x)}") ,=>, parsed("(for [x xs :when (< x 0)] (f x))")
+test.fact("each block",
+	parse("each x in range xs{f(x)}")    ,=>, parsed("(doseq [x xs] (f x))"),
+	parse("each x  in  range xs {f(x)}") ,=>, parsed("(doseq [x xs] (f x))"),
+	parse("each x in  lazy xs{f(x)}") ,=>, parsed("(for [x xs] (f x))"),
+	parse("each x in  lazy xs if a{f(x)}") ,=>, parsed("(for [x xs :when a] (f x))"),
+	parse("each i in  times n {f(i)}") ,=>, parsed("(dotimes [i n] (f i))"),
+	parse("each [a,b] in  lazy xs{f(a,b)}") ,=>, parsed("(for [[a b] xs] (f a b))"),
+	parse("each x in lazy xs if x<0 {f(x)}") ,=>, parsed("(for [x xs :when (< x 0)] (f x))")
 )
-test.fact("c-style for",
-	parse("for i := 0; i<n; i++ {f(i)}") ,=>, parsed("(dotimes [i n] (f i))")
+test.fact("each as",
+	parse("each x in range xs as f(x)")    ,=>, parsed("(doseq [x xs] (f x))"),
+	parse("each x  in  range xs as f(x)") ,=>, parsed("(doseq [x xs] (f x))"),
+	parse("each x in  lazy xs as f(x)") ,=>, parsed("(for [x xs] (f x))"),
+	parse("each x in  lazy xs if a as f(x)") ,=>, parsed("(for [x xs :when a] (f x))"),
+	parse("each i in  times n as f(i)") ,=>, parsed("(dotimes [i n] (f i))"),
+	parse("each [a,b] in  lazy xs as f(a,b)") ,=>, parsed("(for [[a b] xs] (f a b))"),
+	parse("each x in lazy xs if x<0 as f(x)") ,=>, parsed("(for [x xs :when (< x 0)] (f x))")
+)
+test.fact("c-style for block",
+	parse("each i = 0; i<n; i++ {f(i)}") ,=>, parsed("(dotimes [i n] (f i))")
+)
+test.fact("c-style for as",
+	parse("each i = 0; i<n; i++ as f(i)") ,=>, parsed("(dotimes [i n] (f i))")
 )
 test.fact("Camelcase is converted to dash-separated",
 	parse("foo") ,=>, parsed("foo"),

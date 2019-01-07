@@ -24,9 +24,7 @@ test.fact("Most things are Expression",
 
 	{
 		Given digits is [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-		Given squares is for d := lazy digits {
-			d * d
-		}
+		Given squares is each d in lazy digits as d * d
 		squares
 	}, =>, [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 )
@@ -266,9 +264,7 @@ test.fact("for",
 
 	{
 		Given fib        is [1, 1, 2, 3, 5, 8]
-		Given fibSquared is for x := lazy fib {
-			x * x
-		}
+		Given fibSquared is each x in lazy fib as x * x
 
 		fibSquared
 	}, =>, [1, 1, 4, 9, 25, 64],
@@ -282,9 +278,7 @@ test.fact("for",
 
 	withOutStr({
 		Given fib is [1, 1, 2, 3, 5, 8]
-		for x := lazy fib {
-			print(" ", x)
-		}
+		each x in lazy fib as print(" ", x)
 	}), =>, "",
 
 	withOutStr({
@@ -294,15 +288,11 @@ test.fact("for",
 
 	withOutStr({
 		Given fib is [1, 1, 2, 3, 5, 8]
-		for x := range fib {
-			print(" ", x)
-		}
+		each x in range fib as print(" ", x)
 	}), =>, "  1  1  2  3  5  8",
 
 	withOutStr({
-		for x := times 10 {
-			print(" ", x)
-		}
+		each x in times 10 as print(" ", x)
 	}), =>, "  0  1  2  3  4  5  6  7  8  9"
 
 )
@@ -328,7 +318,7 @@ test.fact("exceptions",
 		dangerous->add(0)
 		mutex <- true  // initialize mutex
 		// for _ := times 1000 {
-		for count := times 1000 {
+		each count in times 1000 as
 			thread {
 				<-mutex   // grab mutex
 				try {
@@ -338,7 +328,6 @@ test.fact("exceptions",
 					mutex <- true   // release mutex
 				}
 			}
-		}
 		Thread::sleep(100)
 		dangerous->get(0)
 	}, =>, 1000
@@ -384,7 +373,7 @@ test.fact("select (2)",
 		Given c1 is make(chan, 1)
 		Given c2 is make(chan, 1)
 		go {
-			for i := times(10000) { var x = i }
+			each i in times(10000) { var x = i }
 			c1 <: 111
 		}
 		go {
@@ -428,7 +417,7 @@ test.fact("select (3)",
 			<:c2
 		}
 		go {
-			for i := times(10000) { var x = i }
+			each i in times(10000) { var x = i }
 			<:c1
 		}
 		<-go {

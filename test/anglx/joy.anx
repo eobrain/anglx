@@ -73,8 +73,8 @@ var pool ExecutorService = Executors::newFixedThreadPool(
 )
 
 func mutateDothreads(f, {threadCount:THREADS, execCount:TIMES} ) {
-	for _ := times threadCount {
-		Given multipleCalls Runnable is func{ for _ := times execCount { f() } }
+	each _ in times threadCount {
+		Given multipleCalls Runnable is func{ each _ in times execCount as f() }
 		pool->submit(multipleCalls)
 	}
 }
@@ -87,7 +87,7 @@ var initialBoard = [
 
 func boardMap(f, bd) {
 	vec(
-		func{vec(for s := lazy $1 { f(s) })}  map  bd
+		func{vec(each s in lazy $1 as f(s))}  map  bd
 	)
 }
 

@@ -170,7 +170,7 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
 			  escapedidentifier)
              Keyword = #'\bcase\b'
                      | #'\bconst\b'
-                     | #'\bfor\b'
+                     | #'\each\b'
                      | #'\bif\b'
                      | #'\bnew\b'
                      | #'\bpackage\b'
@@ -190,14 +190,14 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
                 | <#'\bif\b'> expr <'then'> expr ( <#'\belse\b'> expr )?
      letifelseexpr = <#'\bif\b'> <','> <'given'> Destruct <'is'> expr <','>
                             expr Blocky ( <#'\belse\b'> Blocky )?
-     forrange = <#'\bfor\b'> Destruct <':=' #'\brange\b'> expr  Blocky
-     forlazy = <#'\bfor\b'> Destruct <':=' #'\blazy\b'> expr
-               (<#'\bif\b'> expr )? Blocky
-     fortimes = <#'\bfor\b'> Identifier <':=' #'\btimes\b'> expr Blocky
-     forcstyle = <#'\bfor\b'> Identifier <':=' '0' ';'>
+     forrange = <#'\beach\b'> Destruct <'in' #'\brange\b'> expr (<'as'> expr | Blocky)
+     forlazy = <#'\beach\b'> Destruct <'in' #'\blazy\b'> expr
+               (<#'\bif\b'> expr )? (<'as'> expr | Blocky)
+     fortimes = <#'\beach\b'> Identifier <'in' #'\btimes\b'> expr (<'as'> expr | Blocky)
+     forcstyle = <#'\beach\b'> Identifier <'=' '0' ';'>
                          Identifier <'<'> expr <';'>
                          Identifier <'++'>
-                         Blocky
+                         (<'as'> expr | Blocky)
      tryexpr = <#'\btry\b'> ImpliedDo catches finally?
        catches = {catch}
          catch = <#'\bcatch\b'> typename Identifier ImpliedDo
