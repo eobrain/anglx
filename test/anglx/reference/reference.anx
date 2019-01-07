@@ -18,11 +18,7 @@ var b = 66
 test.fact("Most things are Expression",
 
 	{
-		Given smaller is if a < b {
-			a
-		} else {
-			b
-		}
+		Given smaller is if a < b then a else b
 		smaller
 	}, =>, 55,
 

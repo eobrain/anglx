@@ -637,6 +637,11 @@ test.fact("if",
 	parse("if a {  b  }else{ c  }") ,=>, parsed("(if a b c)"),
 	parse("if a {b;c} else {d;e}") ,=>, parsed("(if a (do b c) (do d e))")
 )
+test.fact("single expression if",
+	parse("if a then b") ,=>, parsed("(when a b)"),
+	parse("if a then b else c") ,=>, parsed("(if a b c)"),
+	parse("if a then  b  else c  ") ,=>, parsed("(if a b c)"),
+)
 test.fact("new",
 	parse("new Foo()", [], ["foo.Foo"]) ,=>, parsed("(Foo.)", [], ["foo Foo"]),
 	parse("new Foo(a)", [], ["foo.Foo"]) ,=>, parsed("(Foo. a)", [], ["foo Foo"]),

@@ -187,6 +187,7 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
        vardecl1 = Identifier ( typename )? <'='> expr
        vardecl2 = Identifier  <','> Identifier ( typename )? <'='> precedence00 <','> precedence00
      ifelseexpr = <#'\bif\b'> expr Blocky ( <#'\belse\b'> Blocky )?
+                | <#'\bif\b'> expr <'then'> expr ( <#'\belse\b'> expr )?
      letifelseexpr = <#'\bif\b'> Destruct <':='> expr <NL>
                             expr Blocky ( <#'\belse\b'> Blocky )?
      forrange = <#'\bfor\b'> Destruct <':=' #'\brange\b'> expr  Blocky

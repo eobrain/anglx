@@ -108,9 +108,7 @@ func kingMoves(yx){
 }
 
 func isGoodMove(to, enemySq){
-	if (to != enemySq) {
-		to
-	}
+	if to != enemySq then to
 }
 
 var rotateCount = ref(0)
