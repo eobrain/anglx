@@ -1,9 +1,12 @@
 > [Tour][fgotour] - [FAQ][faq] - [Reference][ref]
 
-# funcgo
+# anglx
 
-Funcgo is a compiler that converts Functional Go into Clojure, to run
+Aanglx is a compiler that convertsAnglo-Executable into Clojure, to run
 on the JVM or as JavaScript.
+
+**This is in the process of being converted from [funcgo][funcgo] and is
+not yet ready for use.**
 
 ## Try It Out
 
@@ -206,8 +209,8 @@ function. This is one of the many functions defined in [`clojure.core`][ccore]
 that can be used without needing an `import` statement.
 
 #### Specifying local (immutable) variables
-```go
-		firstName, lastName, age := "John", "Doe", 42
+```txt
+		Given firstName, lastName, age are "John", "Doe", 42
 		str(lastName, ", ", firstName, " - age: ", age)
 	=> "Doe, John - age: 42"
 ```
@@ -260,8 +263,8 @@ around the `foo`).  This can sometimes lead to cleaner and more
 readable code.
 
 #### Specifying keyword and dictionary literals
-```go
-		me := {FIRST_NAME: "Eamonn", FAVORITE_LANGUAGE: "Funcgo"}
+```txt
+		Given me is{FIRST_NAME: "Eamonn", FAVORITE_LANGUAGE: "Funcgo"}
 		str("My name is ", me(FIRST_NAME),
 			", and I really like to program in ", me(FAVORITE_LANGUAGE))
 	=> "My name is Eamonn, and I really like to program in Funcgo"
@@ -344,19 +347,19 @@ In this section are Funcgo versions of some of the Go examples
 from the [A Tour of Go][tour].
 
 #### Placement of constant definitions
-```go
+```txt
 package main
 
 import "fmt"
 
-Pi := 3.14
+Given Pi is 3.14
 
 func main() {
-	World := "世界"
+	Given World is "世界"
 	fmt.Println("Hello", World)
 	fmt.Println("Happy", Pi, "Day")
 	{
-		Truth := true
+		Given Truth is true
 		fmt.Println("Go rules?", Truth)
 	}
 }
@@ -367,7 +370,7 @@ Happy 3.14 Day
 Go rules? true
 ```
 
-One constraint on `:=` definitions is that, except for at the top
+One constraint on `Given` definitions is that, except for at the top
 level, they have to be at the beginning of a curly-brace block. So
 above we had to add an extra level of curlies to allow `Truth` to be
 defined at the bottom of the function.
@@ -523,3 +526,4 @@ version 1.0 or (at your option) any later version.
 [fgotour]: http://tour.funcgo.org
 [ref]: doc/reference.md
 [faq]: doc/FAQ.md
+[funcgo]: https://github.com/eobrain/funcgo
