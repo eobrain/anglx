@@ -37,7 +37,7 @@ func parse(preprocessed, startRule, isAmbiguity) {
 		ambiguity := count(parsedList)
 		switch ambiguity {
 		case 0: {
-			"__preprocessed.go"  spit  preprocessed
+			"__preprocessed.anx"  spit  preprocessed
 			throw(new IOException(
 				"Parsing failure.  Turn off ambiguity flag to see details."))
 		}
@@ -53,7 +53,7 @@ func parse(preprocessed, startRule, isAmbiguity) {
 
 		parsed := parser.Parse(preprocessed, START, startRule)
 		if insta.isFailure(parsed) {
-			"__preprocessed.go"  spit  preprocessed
+			"__preprocessed.anx"  spit  preprocessed
 			throw(new IOException(str(withOutStr(failure.pprintFailure(parsed)))))
 		} else {
 			parsed
