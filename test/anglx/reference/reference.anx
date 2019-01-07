@@ -2,7 +2,7 @@ package reference
 
 import (
 	test "midje/sweet"
-	"funcgo/reference/matrix"
+	"anglx/reference/matrix"
 	"clojure/tools/logging"
 	"cljLoggingConfig/log4j"
 )

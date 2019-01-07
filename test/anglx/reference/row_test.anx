@@ -3,7 +3,7 @@ package row_test
 import (
         test "midje/sweet"
 //	"funcgo/reference/contract"
-	r "funcgo/reference/row"
+	r "anglx/reference/row"
 )
 Given ϵ is 1e-10
 Given a is [2.0, 3.0, 4.0]

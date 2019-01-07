@@ -5,7 +5,7 @@ package row
 exclude (+, *)
 import (
 	"clojure/core"
-	"funcgo/reference/contract"
+	"anglx/reference/contract"
 )
 
 
