@@ -20,7 +20,7 @@ import (
         "clojure/pprint"
         "clojure/string"
         "clojure/tools/cli"
-        "funcgo/core"
+        "anglx/core"
 )
 import type (
 	java.io.{BufferedWriter, File, StringWriter, IOException}
@@ -96,7 +96,7 @@ func repl(){
 		fgoText := consoleReader->readLine()
 		if !string.isBlank(fgoText) {
 			try{
-				cljText := first(core.Parse("repl.go", fgoText, EXPR))
+				cljText := first(core.Parse("repl.anx", fgoText, EXPR))
 				println("Clojure: ", cljText)
 				println("Result:  ", eval(readString(cljText)))
 			} catch Exception e {
@@ -119,7 +119,7 @@ func CompileString(inPath, fgoText) {
 }
 
 func compileFile(inFile File, root File, opts) {
-	splitRoot := reMatches(/([^\.]+)(\.[a-z]+)?(\.gos?)/, inFile->getPath)
+	splitRoot := reMatches(/([^\.]+)(\.[a-z]+)?(\.anxs?)/, inFile->getPath)
 	if !isNil(splitRoot) {
 		[_, inPath, suffixExtra, suffix] := splitRoot
 		compileFile(
@@ -131,7 +131,7 @@ func compileFile(inFile File, root File, opts) {
 		)
 	}
 } (inFile File, root File, inPath, opts, suffixExtra) {
-	outFile := io.file(string.replace(inPath, /\.go(s?)$/, ".clj$1"  str  suffixExtra))
+	outFile := io.file(string.replace(inPath, /\.anx(s?)$/, ".clj$1"  str  suffixExtra))
 	if opts(FORCE) || outFile->lastModified() < inFile->lastModified() {
 		prefixLen := root->getAbsolutePath()->length()
 		relative  := subs(inFile->getAbsolutePath(), prefixLen + 1)

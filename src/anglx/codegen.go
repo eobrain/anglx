@@ -15,7 +15,7 @@ package	 codegen
 import (
 	s     "clojure/string"
 	insta "instaparse/core"
-	symbols "funcgo/symboltable"
+	symbols "anglx/symboltable"
 )
 import type (
 	java.util.List
@@ -105,7 +105,7 @@ func codeGenerator(symbolTable, isGoscript) {
 		afterSlash  := subs(path, slash + 1)
 		[
 			s.replace(beforeSlash, '/', '.'),
-			s.replace(afterSlash, /\.gos?$/, "")
+			s.replace(afterSlash, /\.anxs?$/, "")
 		]
 	}
 

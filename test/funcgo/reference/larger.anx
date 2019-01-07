@@ -6,16 +6,16 @@ import (
 
 test.fact("can concatenate strings",
 	{
-		greeting := "Hello "
-		name := "Eamonn"
+		Given greeting is "Hello "
+		Given name is "Eamonn"
 		str(greeting,  name)
 	}, =>, "Hello Eamonn"
 )
 
 test.fact("can use infix when calling two-parameter-function",
 	{
-		greeting := "Hello "
-		name := "Eamonn"
+		Given greeting is "Hello "
+		Given name is "Eamonn"
 		greeting  str  name
 	},  =>, "Hello Eamonn"
 )

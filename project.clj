@@ -1,6 +1,6 @@
-(defproject org.eamonn.funcgo/funcgo-compiler "0.5.1"
-  :description "Compile Functional Go into Clojure"
-  :url "http://funcgo.org"
+(defproject org.eamonn.anglx/anglx-compiler "0.5.1"
+  :description "Compile Anglo-Executable into Clojure"
+  :url "https://github.com/eobrain/anglx"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
@@ -22,4 +22,4 @@
                :target-path "target/%s"
              }
              :uberjar {:aot :all}}
-  :main funcgo.main)
+  :main anglx.main)

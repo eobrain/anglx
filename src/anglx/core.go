@@ -17,8 +17,8 @@ import (
         "clojure/pprint"
         "instaparse/failure"
         "clojure/string"
-	"funcgo/parser"
-	"funcgo/codegen"
+	"anglx/parser"
+	"anglx/codegen"
 )
 import type java.io.IOException
 
