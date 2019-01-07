@@ -64,7 +64,9 @@ nonpkgfile = (expressions|topwithconst|topwithassign) <NL>?
          consts  = ( const {<NL> const} )?
          assigns = assign {<NL> assign}
            const  = Destruct <'='> expr
-           assign = Destruct {<','> Destruct} ':=' expr {<','> expr}
+           assign = singleassign | multipleassign
+           multipleassign = <'Given'> Destruct <','> Destruct {<','> Destruct} 'are' expr <','> expr {<','> expr}
+           singleassign = <'Given'> Destruct 'is' expr
 	     <Destruct> = Identifier | typedidentifier | vecdestruct | dictdestruct
 	       typedidentifiers = Identifier ({ <','> Identifier })? typename
 	       typedidentifier = Identifier typename

@@ -428,13 +428,28 @@ func codeGenerator(symbolTable, isGoscript) {
 		CONST: func(identifier, expression) {
 			str(identifier, " ", expression)
 		},
-		ASSIGN: func(args...) {
+		ASSIGN: blankJoin,
+		SINGLEASSIGN: func(args...) {
 			vArgs List := vec(args)
-			opPos      := vArgs->indexOf(":=")
+			opPos      := vArgs->indexOf("is")
 			n          := vArgs->size()
 			if  n % 2 != 1 || (n - 1) / 2 != opPos {
 				throw(new IOException(
-					"LHS and RHS of := do not  match"  str  blankJoin(vArgs)
+					"LHS and RHS of Given do not match"  str  blankJoin(vArgs)
+				))
+			} else {
+				" "  s.join  (for i := lazy \`range`(opPos) {
+					str(vArgs[i], " ", vArgs[opPos + 1 + i])
+				})
+			}
+		},
+		MULTIPLEASSIGN: func(args...) {
+			vArgs List := vec(args)
+			opPos      := vArgs->indexOf("are")
+			n          := vArgs->size()
+			if  n % 2 != 1 || (n - 1) / 2 != opPos {
+				throw(new IOException(
+					"LHS and RHS of Given do not match"  str  blankJoin(vArgs)
 				))
 			} else {
 				" "  s.join  (for i := lazy \`range`(opPos) {

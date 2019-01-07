@@ -273,9 +273,9 @@ test.fact("can have nested consts",
         parse(`{const a=1; {const b=2; y}}`), =>, parsed(`(let [a 1] (let [b 2] y))`)
 )
 
-test.fact("can have nested :=",
-        parse(`{a:=1;x;{b:=2;y}}`), =>, parsed(`(let [a 1] x (let [b 2] y))`),
-        parse(`{a:=1; {b:=2; y}}`), =>, parsed(`(let [a 1] (let [b 2] y))`)
+test.fact("can have nested Givens",
+        parse(`{Given a is 1;x;{Given b is 2;y}}`), =>, parsed(`(let [a 1] x (let [b 2] y))`),
+        parse(`{Given a is 1; {Given b is 2; y}}`), =>, parsed(`(let [a 1] (let [b 2] y))`)
 )
 
 // See http://blog.jayfields.com/2010/07/clojure-destructuring.html
@@ -312,15 +312,15 @@ test.fact("Can destructure vectors using const",
 
 // See http://blog.jayfields.com/2010/07/clojure-destructuring.html
 test.fact("Can destructure vectors using :=",
-        parse(`{[a,b]:=ab; f(a,b)}`),
+        parse(`{Given[a,b]is ab; f(a,b)}`),
         =>,
         parsed(`(let [[a b] ab] (f a b))`),
 
-        parse(`{[x, more...] := indexes; f(x, more)}`),
+        parse(`{Given[x, more...] is indexes; f(x, more)}`),
         =>,
         parsed(`(let [[x & more] indexes] (f x more))`),
 
-        parse(`{[x, more..., AS, full] := indexes; f(x, more, full)}`),
+        parse(`{Given[x, more..., AS, full]is indexes; f(x, more, full)}`),
         =>,
         parsed(`(let [[x & more :as full] indexes] (f x more full))`),
 
@@ -329,7 +329,7 @@ test.fact("Can destructure vectors using :=",
         //=>,
         //parsed(`(let [{:keys [x y]} point] (f x y))`),
 
-        parse(`{[[a,b],[c,d]] := numbers; f(a, b, c, d)}`),
+        parse(`{Given[[a,b],[c,d]]is numbers; f(a, b, c, d)}`),
         =>,
         parsed(`(let [[[a b] [c d]] numbers] (f a b c d))`)
 )
@@ -365,15 +365,15 @@ test.fact("can destructure dicts using const and func",
 )
 
 test.fact("can destructure dicts using :=",
-        parse(`{{theX: X, theY: Y} := point; f(theX, theY)}`),
+        parse(`{Given{theX: X, theY: Y}is point; f(theX, theY)}`),
         =>,
         parsed(`(let [{the-x :x, the-y :y} point] (f the-x the-y))`),
 
-        parse(`{{name: NAME, {[pages, \isbn10\]: KEYS}: DETAILS} := book; f(name,pages,\isbn10\)}`),
+        parse(`{Given {name: NAME, {[pages, \isbn10\]: KEYS}: DETAILS} is book; f(name,pages,\isbn10\)}`),
         =>,
         parsed(`(let [{name :name, {[pages isbn10] :keys} :details} book] (f name pages isbn10))`),
 
-        parse(`{{name: NAME, [hole1, hole2]: SCORES} := golfer; f(name, hole1, hole2)}`),
+        parse(`{Given {name: NAME, [hole1, hole2]: SCORES} is golfer; f(name, hole1, hole2)}`),
         =>,
         parsed(`(let [{name :name, [hole1 hole2] :scores} golfer] (f name hole1 hole2))`)
 )
@@ -557,12 +557,12 @@ a}`),=>, parsed("(let [b 2] a)"),
 	parse("{ const(\n  c = 2\n )\n a}"),=>, parsed("(let [c 2] a)"),
 	parse("{const(a = 2)f(a,b)}"),=>, parsed("(let [a 2] (f a b))")
 )
-test.fact(":=",
-	parse("{a := 2;a}"),=>, parsed("(let [a 2] a)"),
-	parse("{  a := 2 ; a}"),=>, parsed("(let [a 2] a)"),
-	parse("{\nb := 2\n\na}"),=>, parsed("(let [b 2] a)"),
-	parse("{ \n  c := 2\n \n a}"),=>, parsed("(let [c 2] a)"),
-	parse("{a := 2;f(a,b)}"),=>, parsed("(let [a 2] (f a b))")
+test.fact("Given",
+	parse("{Given a is 2;a}"),=>, parsed("(let [a 2] a)"),
+	parse("{ Given  a is 2 ; a}"),=>, parsed("(let [a 2] a)"),
+	parse("{\nGiven b is 2\n\na}"),=>, parsed("(let [b 2] a)"),
+	parse("{ \n  Given c is 2\n \n a}"),=>, parsed("(let [c 2] a)"),
+	parse("{Given a is 2;f(a,b)}"),=>, parsed("(let [a 2] (f a b))")
 )
 test.fact("comment",
 	parse("//0 blah blah\naaa0")          ,=>, parsed("aaa0"),
@@ -605,7 +605,7 @@ test.fact("bug2",
 
 test.fact("bug3",
 	parse(`try {
-					i := dangerous->get(0)
+					Given i is dangerous->get(0)
 					dangerous->set(0, i + 1)
 				} finally {
 					mutex <- true   // release mutex
@@ -764,7 +764,7 @@ func HasPackage(st, pkg) {
 
 test.fact("bug7",
 	parse(`
-whitespaceOrComments := parser("xxx")
+Given whitespaceOrComments is parser("xxx")
 
 yyy
 `), =>, parsed(`(let [whitespace-or-comments (parser "xxx")] yyy)`)
@@ -883,9 +883,9 @@ default:
 test.fact("go syntax",
 	parse(`
 func main() {
-    a := []int{7, 2, 8, -9, 4, 0}
+    Given a is []int{7, 2, 8, -9, 4, 0}
 
-    c := make(chan int)
+    Given c is make(chan int)
     go sum(a[:len(a)/2], c)
     go sum(a[len(a)/2:], c)
     var x, y = <-c, <-c // receive from c

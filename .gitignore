@@ -13,3 +13,5 @@ pom.xml.asc
 /src/*/*.clj
 /test/*.clj
 /test/**/*.clj
+
+__preprocessed\.go
