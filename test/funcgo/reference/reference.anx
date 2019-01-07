@@ -18,7 +18,7 @@ var b = 66
 test.fact("Most things are Expression",
 
 	{
-		smaller := if a < b {
+		Given smaller is if a < b {
 			a
 		} else {
 			b
@@ -27,8 +27,8 @@ test.fact("Most things are Expression",
 	}, =>, 55,
 
 	{
-		digits  := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-		squares := for d := lazy digits {
+		Given digits is [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		Given squares is for d := lazy digits {
 			d * d
 		}
 		squares
@@ -59,7 +59,7 @@ test.fact("Looping with tail recursion",
 			if isEmpty(vec) {
 				0
 			} else {
-				x := first(vec)
+				Given x is first(vec)
 				x * x + sumSquares(rest(vec))
 			}
 		}
@@ -73,7 +73,7 @@ test.fact("Looping with tail recursion",
 				if isEmpty(v) {
 					accum
 				} else {
-					x := first(v)
+					Given x is first(v)
 					recur(accum + x * x, rest(v))
 				}
 			}
@@ -88,7 +88,7 @@ test.fact("Looping with tail recursion",
 				if isEmpty(v) {
 					accum
 				} else {
-					x int := first(v)
+					Given x int is first(v)
 					recur(accum + x * x, rest(v))
 				}
 			}
@@ -98,7 +98,7 @@ test.fact("Looping with tail recursion",
 
 	loop(vec=[], count = 0) {
 		if count < 10 {
-			v := vec  conj  count
+			Given v is vec  conj  count
 			recur(v, count + 1)
 		} else {
 			vec
@@ -109,7 +109,7 @@ test.fact("Looping with tail recursion",
 
 test.fact("Curly Brace Blocks",
 	{
-		product := {
+		Given product is {
 			logging.info("doing the multiplication")
 			100 * 100
 		}
@@ -198,7 +198,7 @@ var (
 
 test.fact("you can transpose matrices",
 	{
-		m := [
+		Given m is [
 			[1, 2, 3],
 			[4, 5, 6]
 		]
@@ -215,8 +215,8 @@ test.fact("you can transpose matrices",
 
 test.fact("you can multiply matrices together",
 	{
-		a := [[3, 4]]
-		b := [
+		Given a is [[3, 4]]
+		Given b is [
 			[5],
 			[6]
 		]
@@ -226,11 +226,11 @@ test.fact("you can multiply matrices together",
 	}, =>, [[39]],
 
 	{
-		m := [
+		Given m is [
 			[1, 2, 3],
 			[4, 5, 6]
 		]
-		mT := [
+		Given mT is [
 			[1, 4],
 			[2, 5],
 			[3, 6]
@@ -269,8 +269,8 @@ test.fact("vars",
 test.fact("for",
 
 	{
-		fib        := [1, 1, 2, 3, 5, 8]
-		fibSquared := for x := lazy fib {
+		Given fib        is [1, 1, 2, 3, 5, 8]
+		Given fibSquared is for x := lazy fib {
 			x * x
 		}
 
@@ -278,26 +278,26 @@ test.fact("for",
 	}, =>, [1, 1, 4, 9, 25, 64],
 
 	{
-		fib        := [1, 1, 2, 3, 5, 8]
-		fibSquared := func(x){ x * x }  map  fib
+		Given fib        is [1, 1, 2, 3, 5, 8]
+		Given fibSquared is func(x){ x * x }  map  fib
 
 		fibSquared
 	}, =>, [1, 1, 4, 9, 25, 64],
 
 	withOutStr({
-		fib := [1, 1, 2, 3, 5, 8]
+		Given fib is [1, 1, 2, 3, 5, 8]
 		for x := lazy fib {
 			print(" ", x)
 		}
 	}), =>, "",
 
 	withOutStr({
-		fib := [1, 1, 2, 3, 5, 8]
+		Given fib is [1, 1, 2, 3, 5, 8]
 		func(x){ print(" ", x) }  map  fib
 	}), =>, "",
 
 	withOutStr({
-		fib := [1, 1, 2, 3, 5, 8]
+		Given fib is [1, 1, 2, 3, 5, 8]
 		for x := range fib {
 			print(" ", x)
 		}
@@ -327,8 +327,8 @@ test.fact("exceptions",
 	}, =>, "assertion failed: foo",
 
 	{
-		mutex     := make(chan, 1)
-		dangerous := new ArrayList()
+		Given mutex     is make(chan, 1)
+		Given dangerous is new ArrayList()
 		dangerous->add(0)
 		mutex <- true  // initialize mutex
 		// for _ := times 1000 {
@@ -336,7 +336,7 @@ test.fact("exceptions",
 			thread {
 				<-mutex   // grab mutex
 				try {
-					i := dangerous->get(0)
+					Given i is dangerous->get(0)
 					dangerous->set(0, i + 1)
 				} finally {
 					mutex <- true   // release mutex
@@ -351,8 +351,8 @@ test.fact("exceptions",
 test.fact("select (1)",
 
 	{
-		c1 := make(chan, 1)
-		c2 := make(chan, 1)
+		Given c1 is make(chan, 1)
+		Given c2 is make(chan, 1)
 		thread {
 			Thread::sleep(10)
 			c1 <- 111
@@ -367,8 +367,8 @@ test.fact("select (1)",
 	}, =>, 22200,
 
 	{
-		c1 := make(chan, 1)
-		c2 := make(chan, 1)
+		Given c1 is make(chan, 1)
+		Given c2 is make(chan, 1)
 		go func(){
 			Thread::sleep(10)
 			c1 <- 111
@@ -385,8 +385,8 @@ test.fact("select (1)",
 
 test.fact("select (2)",
 	{
-		c1 := make(chan, 1)
-		c2 := make(chan, 1)
+		Given c1 is make(chan, 1)
+		Given c2 is make(chan, 1)
 		go {
 			for i := times(10000) { var x = i }
 			c1 <: 111
@@ -405,8 +405,8 @@ test.fact("select (2)",
 	}, =>, 22200,
 
 	{
-		c1 := make(chan)
-		c2 := make(chan)
+		Given c1 is make(chan)
+		Given c2 is make(chan)
 		go func(){
 			Thread::sleep(10)
 			<-c1
@@ -426,8 +426,8 @@ test.fact("select (2)",
 
 test.fact("select (3)",
 	{
-		c1 := make(chan)
-		c2 := make(chan)
+		Given c1 is make(chan)
+		Given c2 is make(chan)
 		go {
 			<:c2
 		}
@@ -446,8 +446,8 @@ test.fact("select (3)",
 	}, =>, "wrote to c2",
 
 	{
-		c1 := make(chan, 1)
-		c2 := make(chan)
+		Given c1 is make(chan, 1)
+		Given c2 is make(chan)
 		thread {
 			Thread::sleep(20)
 			c1 <- 111
@@ -490,14 +490,14 @@ test.fact("precedence",
 test.fact("can destructure",
 
 	{
-		vec          := [111, 222, 333, 444]
-		[a, b, c, d] := vec
+		Given vec          is [111, 222, 333, 444]
+		Given [a, b, c, d] is vec
 
 		b
 	}, =>, 222,
 
 	{
-		vec := [111, 222, 333, 444]
+		Given vec is [111, 222, 333, 444]
 
 		func theSecond([a, b, c, d]) {
 			b
@@ -507,21 +507,21 @@ test.fact("can destructure",
 	}, =>, 222,
 
 	{
-		vec              := [111, 222, 333, 444]
-		[first, rest...] := vec
+		Given vec              is [111, 222, 333, 444]
+		Given [first, rest...] is vec
 
 		rest
 	}, =>, [222, 333, 444],
 
 	{
-		dict             := {AAA: 11,  BBB: 22,  CCC: 33,  DDD: 44}
-		{c: CCC, a: AAA} := dict
+		Given dict             is {AAA: 11,  BBB: 22,  CCC: 33,  DDD: 44}
+		Given {c: CCC, a: AAA} is dict
 
 		c
 	}, =>, 33,
 
 	{
-		dict := {AAA: 11,  BBB: 22,  CCC: 33,  DDD: 44}
+		Given dict is {AAA: 11,  BBB: 22,  CCC: 33,  DDD: 44}
 
 		func extractCCC({c: CCC}) {
 			c
@@ -531,13 +531,13 @@ test.fact("can destructure",
 	}, =>, 33,
 
 	{
-		planets := [
+		Given planets is [
 			{NAME: "Mercury", RADIUS_KM: 2440},
 			{NAME: "Venus",   RADIUS_KM: 6052},
 			{NAME: "Earth",   RADIUS_KM: 6371},
 			{NAME: "Mars",    RADIUS_KM: 3390}
 		]
-		[_, _, {earthRadiusKm: RADIUS_KM}, _] := planets
+		Given [_, _, {earthRadiusKm: RADIUS_KM}, _] is planets
 
 		earthRadiusKm
 	}, =>, 6371

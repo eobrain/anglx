@@ -14,4 +14,4 @@ pom.xml.asc
 /test/*.clj
 /test/**/*.clj
 
-__preprocessed\.go
+__preprocessed\.anx
