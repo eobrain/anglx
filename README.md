@@ -2,7 +2,7 @@
 
 # anglx
 
-Aanglx is a compiler that convertsAnglo-Executable into Clojure, to run
+Anglx is a compiler that convertsAnglo-Executable into Clojure, to run
 on the JVM or as JavaScript.
 
 **This is in the process of being converted from [funcgo][funcgo] and is
