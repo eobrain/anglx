@@ -1,5 +1,3 @@
-// -*- mode: Go -*-
-
 package mainupload
 
 import macros (
